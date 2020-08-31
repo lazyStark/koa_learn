@@ -10,5 +10,17 @@ router.post('/login', async (ctx, next) => {
     password
   }
 })
+router.get('/session-test', async (ctx, next) => {
+  // debugger
+  if (ctx.session.viewCount === null) {
+    ctx.session.viewCount = 0
+  }
+  // console.log(ctx.session)
+  ctx.session.viewCount++
+  ctx.body = {
+    msg: 'ok',
+    viewCount: ctx.session.viewCount
+  }
+})
 
 module.exports = router
