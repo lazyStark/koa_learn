@@ -5,13 +5,7 @@ const json = require('koa-json')
 const onerror = require('koa-onerror')
 const bodyparser = require('koa-bodyparser')
 const logger = require('koa-logger')
-const session = require('koa-generic-session')
-const redisStore = require('koa-redis')
-
-const index = require('./routes/index')
-const users = require('./routes/users')
-const blog = require('./routes/blog')
-const login = require('./routes/login')
+const InitMain = require('./core/init')
 
 // error handler
 onerror(app)
@@ -37,27 +31,11 @@ app.use(async (ctx, next) => {
 })
 
 // session 配置
-app.keys = ['siwenfeng#$']
-app.use(session({
-  // 配置cookie
-  cookie: {
-    path: '/',
-    httpOnly: true,
-    maxAge: 24 * 60 * 60 * 1000
-  },
-  // redis 配置
-  store: redisStore({
-    host:'127.0.0.1',
-    port: 6379,
-    password:'siwenfeng'
-  })
-}))
+InitMain.initCore(app)
 
 // routes
-app.use(index.routes(), index.allowedMethods())
-app.use(users.routes(), users.allowedMethods())
-app.use(blog.routes(), blog.allowedMethods())
-app.use(login.routes(), login.allowedMethods())
+// InitRoutes.initCore(app)
+
 
 // error-handling
 app.on('error', (err, ctx) => {
