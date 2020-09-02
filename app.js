@@ -6,6 +6,7 @@ const onerror = require('koa-onerror')
 const bodyparser = require('koa-bodyparser')
 const logger = require('koa-logger')
 const InitMain = require('./core/init')
+const ExceptonError = require('./middlewares/exception')
 
 // error handler
 onerror(app)
@@ -30,6 +31,7 @@ app.use(async (ctx, next) => {
   console.log(`${ctx.method} ${ctx.url} - ${ms}ms`)
 })
 
+app.use(ExceptonError)
 // session 配置
 InitMain.initCore(app)
 
